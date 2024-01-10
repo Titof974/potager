@@ -12,9 +12,54 @@ use uuid::Uuid;
 use crate::{SharedState, DigestPayload, RequestChunkUpload, ip, RequestErrors, RequestError};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub(crate) struct Blobs {
+pub(crate) struct Blob {
     pub digest: String,
     pub data: Vec<u8>,
+    pub parents: Option<Vec<String>>
+}
+
+pub struct BlobInMemoryDb {
+    blobs: Vec<Blob>
+}
+
+trait BlobDbOperation {
+    fn add_blob(&mut self, blob: Blob) -> Result<(), String>;
+    fn blob_exists(&self, digest: String) -> Result<(), String>;
+    fn get_blob(&self, digest: String) -> Option<Blob>;
+    fn add_parent_to_blob(&self, digest: String, parent: String) -> Result<(), String>;
+    fn remove_parent_from_blob(&self, digest: String, parent: String) -> Result<(), String>;
+    fn get_orphan_blobs(&self) -> Option<Vec<Blob>>;
+    fn get_blobs_attached_to_parent(&self, parent: String) -> Option<Vec<Blob>>;
+}
+
+impl BlobDbOperation for BlobInMemoryDb {
+    fn add_blob(&self, blob: Blob) -> Result<(), String> {
+        todo!()
+    }
+
+    fn blob_exists(&self, digest: String) -> Result<(), String> {
+        todo!()
+    }
+
+    fn get_blob(&self, digest: String) -> Option<Blob> {
+        todo!()
+    }
+
+    fn add_parent_to_blob(&self, digest: String, parent: String) -> Result<(), String> {
+        todo!()
+    }
+
+    fn remove_parent_from_blob(&self, digest: String, parent: String) -> Result<(), String> {
+        todo!()
+    }
+
+    fn get_orphan_blobs(&self) -> Option<Vec<Blob>> {
+        todo!()
+    }
+
+    fn get_blobs_attached_to_parent(&self, parent: String) -> Option<Vec<Blob>> {
+        todo!()
+    }
 }
 
 pub async fn get_blob(
@@ -131,7 +176,7 @@ pub async fn put_upload_blob(
         }
         println!("Digest {:?}", digest_payload.digest);
         if digest_payload.digest.is_some() {
-            registry.blobs.push(Blobs {
+            registry.blobs.push(Blob {
                 digest: digest_payload.digest.clone().unwrap(),
                 data: chunk.as_ref().unwrap().data.clone(),
             })

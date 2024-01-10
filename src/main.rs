@@ -1,4 +1,5 @@
 mod blob;
+mod registry;
 
 use axum::{
     body::{self, Body, Bytes},
@@ -9,7 +10,7 @@ use axum::{
     Error, Json, Router,
 };
 use axum_extra::routing::RouterExt;
-use blob::{blob_exists, get_blob, post_upload_blob, put_upload_blob, patch_upload_blob, Blobs};
+use blob::{blob_exists, get_blob, post_upload_blob, put_upload_blob, patch_upload_blob, Blob};
 use chrono::Local;
 use serde::{de, Deserialize, Deserializer, Serialize};
 use serde_json::{json, Value};
@@ -37,7 +38,7 @@ struct AppState {
 
 #[derive(Default)]
 struct Registry {
-    blobs: Vec<Blobs>,
+    blobs: Vec<Blob>,
     manifests: Vec<Manifest>,
     request_chunk_uploads: Vec<RequestChunkUpload>,
 }
