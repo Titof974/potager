@@ -11,3 +11,7 @@ pub async fn with_status() -> Result<impl IntoResponse, (StatusCode, Json<serde_
     Ok((StatusCode::NOT_FOUND, Json(json_response)))
 }
 ````
+
+# TODO
+[] Change tag by name/tag hashmap<str,vec<str>>
+[] Handle error correctly
